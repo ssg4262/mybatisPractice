@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="co.micol.prj.member.service.MemberMapper">
+	<select id="memberSelectList" resultType="co.micol.prj.member.service.MemberVO">
+		SELECT * FROM MEMBER
+	</select>
+	
+	<select id="memberSelect" parameterType="co.micol.prj.member.service.MemberVO"
+		resultType="co.micol.prj.member.service.MemberVO">
+		SELECT * FROM MEMBER WHERE ID = #{id}
+	</select>
+	
+	<insert id="memberInsert" parameterType="co.micol.prj.member.service.MemberVO">
+		INSERT INTO MEMBER 
+		VALUES(#{id},#{password},#{name},#{tel},#{address},#{author})
+	</insert>
+	
+	<update id="memberUpdate" parameterType="co.micol.prj.member.service.MemberVO">
+		UPDATE MEMBER 
+		<set>
+			<if test="password != null">SET PASSWORD = #{password},</if>
+			<if test="name != null">SET NAME = #{name},</if>
+			<if test="address != null">SET ADDRESS = #{address},</if>
+			<if test="tel != null">SET TEL = #{tel},</if>
+			<if test="author != null">SET AUTHOR = #{author},</if>
+		</set>
+		WHERE ID = #{id}
+	</update>
+	
+	<delete id="memberDelete" parameterType="co.micol.prj.member.service.MemberVO">
+		DELETE FROM MEMBER WHERE ID = #{id}
+	</delete>
+	
+	<select id="isIdCheck" parameterType="String"
+		resultType="boolean">
+		SELECT CASE WHEN COUNT(ID) = 1 THEN 0 ELSE 1 END AS ID
+		FROM MEMBER WHERE ID = #{id}
+	</select>
+	
+	<select id="memberLoginCheck" parameterType="co.micol.prj.member.service.MemberVO"
+			resultType="co.micol.prj.member.service.MemberVO">			
+		SELECT * FROM MEMBER 
+		WHERE ID = #{id} AND PASSWORD = #{password}
+	</select>
+</mapper>
